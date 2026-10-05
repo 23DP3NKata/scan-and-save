@@ -15,6 +15,14 @@ const router = createRouter({
   },
   routes: [
     { path: "/", component: () => import("../views/HomeView.vue") },
+    ...["register"].map(
+      (mode) => ({
+        path: `/${mode}`,
+        component: () => import("../views/auth/AuthView.vue"),
+        props: { mode },
+        meta: { guest: true },
+      }),
+    ),
   ],
 });
 export default router;
