@@ -25,6 +25,13 @@ const router = createRouter({
       }),
     ),
     {
+      path: "/app",
+      component: () => import("../layouts/AppLayout.vue"),
+      meta: { auth: true },
+      children: [
+      ],
+    },
+    {
       path: "/connection-error",
       component: () => import("../views/ConnectionError.vue"),
     },
