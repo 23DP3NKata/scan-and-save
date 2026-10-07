@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         JsonResource::withoutWrapping();
+        RateLimiter::for('login', fn (Request $request): array => [Limit::perMinute(10)->by('login-ip:'.$request->ip()), Limit::perMinute(5)->by('login:'.strtolower((string) $request->input('email')).'|'.$request->ip())]);
         RateLimiter::for('registration', fn (Request $request): Limit => Limit::perMinute(5)->by($request->ip()));
     }
 }

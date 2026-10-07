@@ -9,8 +9,11 @@ use App\Models\SystemSetting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -34,5 +37,33 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return response()->json(['user' => new UserResource($user)], 201);
+    }
+
+    public function login(AuthRequest $request): JsonResponse
+    {
+        $user = User::where('email', $request->validated('email'))->first();
+        if ($user && Hash::check($request->validated('password'), $user->password) && $user->status !== 1) {
+            abort(403, 'Šis konts ir bloķēts. Sazinieties ar administratoru.');
+        }
+        if (! Auth::attempt(['email' => $request->validated('email'), 'password' => $request->validated('password'), 'status' => 1], $request->boolean('remember'))) {
+            throw ValidationException::withMessages(['email' => 'The provided email or password is incorrect.']);
+        }
+        $request->session()->regenerate();
+
+        return response()->json(['user' => new UserResource($request->user())]);
+    }
+
+    public function me(Request $request): JsonResponse
+    {
+        return response()->json(['user' => new UserResource($request->user())]);
+    }
+
+    public function logout(Request $request): Response
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->noContent();
     }
 }
