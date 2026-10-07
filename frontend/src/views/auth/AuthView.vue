@@ -24,6 +24,7 @@ const visible = ref(false);
 const title = computed(
   () =>
     ({
+      login: "Prieks tevi atkal redzēt.",
       register: "Izveido savu kontu.",
     })[props.mode],
 );
@@ -45,8 +46,9 @@ async function submit() {
   errors.value = {};
   success.value = "";
   try {
-    if (props.mode === "register") {
-      await auth.register(form);
+    if (props.mode === "login" || props.mode === "register") {
+      if (props.mode === "login") await auth.login(form);
+      else await auth.register(form);
       const redirect = String(route.query.redirect || "/app");
       await router.replace(
         redirect.startsWith("/") && !redirect.startsWith("//")
@@ -156,6 +158,12 @@ async function submit() {
               minlength="5"
               autocomplete="new-password"
           /></label>
+          <div v-if="mode === 'login'" class="auth-options">
+            <label
+              ><input v-model="form.remember" type="checkbox" /> Atcerēties
+              mani</label
+            >
+          </div>
           <button class="action-primary auth-submit" :disabled="busy">
             {{
               busy
