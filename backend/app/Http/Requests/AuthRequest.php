@@ -25,6 +25,9 @@ class AuthRequest extends FormRequest
 
         return match ($this->route()->getActionMethod()) {
             'register' => ['name' => ['required', 'string', 'regex:/^[\p{L}\p{N}]{3,30}$/u'], 'email' => [...$email, Rule::unique('users')], 'password' => ['required', 'string', 'min:5', 'max:255', 'confirmed']],
+            'login' => ['email' => $email, 'password' => ['required', 'string', 'max:255'], 'remember' => ['sometimes', 'boolean']],
+            'forgotPassword' => ['email' => $email],
+            'resetPassword' => ['email' => $email, 'token' => ['required', 'string'], 'password' => ['required', 'string', 'min:5', 'max:255', 'confirmed']],
             default => [],
         };
     }

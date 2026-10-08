@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useAuthStore } from "../stores/auth";
 const router = createRouter({
   history: createWebHistory(),
   scrollBehavior(to, _from, saved) {
@@ -15,7 +16,7 @@ const router = createRouter({
   },
   routes: [
     { path: "/", component: () => import("../views/HomeView.vue") },
-    ...["register"].map(
+    ...["login", "register", "forgot-password", "reset-password"].map(
       (mode) => ({
         path: `/${mode}`,
         component: () => import("../views/auth/AuthView.vue"),
@@ -23,6 +24,37 @@ const router = createRouter({
         meta: { guest: true },
       }),
     ),
+    {
+      path: "/app",
+      component: () => import("../layouts/AppLayout.vue"),
+      meta: { auth: true },
+      children: [
+      ],
+    },
+    {
+      path: "/connection-error",
+      component: () => import("../views/ConnectionError.vue"),
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      component: () => import("../views/NotFoundView.vue"),
+    },
   ],
+});
+router.beforeEach(async (to) => {
+  if (!to.meta.auth && !to.meta.guest) return;
+  const auth = useAuthStore();
+  try {
+    await auth.fetchUser(true);
+  } catch {
+    return { path: "/connection-error", query: { next: to.fullPath } };
+  }
+  if (to.meta.auth && !auth.user)
+    return { path: "/login", query: { redirect: to.fullPath } };
+  if (to.meta.admin && auth.user?.role !== 1) return "/app";
+  if (to.meta.guest && auth.user) return "/app";
+});
+router.afterEach((to) => {
+  document.title = `${to.meta.title || "Tavi dokumenti. Vienmēr ar tevi."} · Scan & Save`;
 });
 export default router;
