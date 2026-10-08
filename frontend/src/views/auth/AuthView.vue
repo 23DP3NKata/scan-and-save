@@ -2,7 +2,7 @@
 import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
-import { ApiError, extractError } from "../../services/api";
+import { api, ApiError, extractError } from "../../services/api";
 import HomeBrand from "../../components/home/HomeBrand.vue";
 import HomeIcon from "../../components/home/HomeIcon.vue";
 const props = defineProps<{ mode: string }>();
@@ -26,6 +26,8 @@ const title = computed(
     ({
       login: "Prieks tevi atkal redzēt.",
       register: "Izveido savu kontu.",
+      "forgot-password": "Atjauno piekļuvi.",
+      "reset-password": "Izvēlies jaunu paroli.",
     })[props.mode],
 );
 const passwordNeeded = computed(() => props.mode !== "forgot-password");
@@ -55,6 +57,24 @@ async function submit() {
           ? redirect
           : "/app",
       );
+    } else if (props.mode === "forgot-password") {
+      await api("/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify({ email: form.email }),
+      });
+      success.value =
+        "Ja konts ar šo e-pastu pastāv, saņemsi saiti paroles atjaunošanai.";
+    } else {
+      await api("/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify({
+          ...form,
+          token: String(route.query.token || ""),
+        }),
+      });
+      success.value = "Parole ir nomainīta. Tagad vari pieslēgties.";
+      form.password = "";
+      form.password_confirmation = "";
     }
   } catch (e) {
     error.value = extractError(e);
@@ -162,7 +182,7 @@ async function submit() {
             <label
               ><input v-model="form.remember" type="checkbox" /> Atcerēties
               mani</label
-            >
+            ><RouterLink to="/forgot-password">Aizmirsi paroli?</RouterLink>
           </div>
           <button class="action-primary auth-submit" :disabled="busy">
             {{

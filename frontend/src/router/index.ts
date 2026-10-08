@@ -16,7 +16,7 @@ const router = createRouter({
   },
   routes: [
     { path: "/", component: () => import("../views/HomeView.vue") },
-    ...["login", "register"].map(
+    ...["login", "register", "forgot-password", "reset-password"].map(
       (mode) => ({
         path: `/${mode}`,
         component: () => import("../views/auth/AuthView.vue"),
