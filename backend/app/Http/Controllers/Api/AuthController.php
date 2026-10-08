@@ -7,12 +7,16 @@ use App\Http\Requests\AuthRequest;
 use App\Http\Resources\UserResource;
 use App\Models\SystemSetting;
 use App\Models\User;
+use App\Services\AccountService;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -65,5 +69,31 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return response()->noContent();
+    }
+
+    public function forgotPassword(AuthRequest $request): JsonResponse
+    {
+        Password::sendResetLink($request->safe()->only(['email']));
+
+        return response()->json(['message' => 'Ja šai e-pasta adresei ir reģistrēts konts, nosūtījām paroles atjaunošanas saiti.']);
+    }
+
+    public function resetPassword(AuthRequest $request, AccountService $accounts): JsonResponse
+    {
+        $status = Password::reset($request->validated(), function (User $user, string $password) use ($accounts, $request): void {
+            $user->forceFill(['password' => $password, 'remember_token' => Str::random(60)])->save();
+            $accounts->revokeSessions($user);
+            if ($request->user()?->id === $user->id) {
+                Auth::logoutCurrentDevice();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+            }
+            event(new PasswordReset($user));
+        });
+        if ($status !== Password::PasswordReset) {
+            throw ValidationException::withMessages(['email' => __($status)]);
+        }
+
+        return response()->json(['message' => 'Parole ir atjaunota. Tagad varat pierakstīties.']);
     }
 }
