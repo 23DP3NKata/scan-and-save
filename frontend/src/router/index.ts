@@ -29,6 +29,11 @@ const router = createRouter({
       component: () => import("../layouts/AppLayout.vue"),
       meta: { auth: true },
       children: [
+        {
+          path: "categories",
+          component: () => import("../views/app/CategoriesView.vue"),
+          meta: { title: "Kategorijas" },
+        },
       ],
     },
     {

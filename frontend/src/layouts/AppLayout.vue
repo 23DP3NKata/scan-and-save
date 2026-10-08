@@ -44,6 +44,7 @@ const isAdmin = computed(() => !!route.meta.admin);
 const links = computed(() =>
   [
         ["/app", "grid", "Pārskats"],
+        ["/app/categories", "folder", "Kategorijas"],
       ],
 );
 function sessionEnded() {
