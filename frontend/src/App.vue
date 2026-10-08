@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import "./style.css";
+import "./application.css";
 </script>
-
 <template>
-  <HelloWorld />
+  <v-app><RouterView /></v-app>
 </template>
