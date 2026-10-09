@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Middleware\EnsureActiveUser;
@@ -18,6 +19,7 @@ Route::prefix('api')->group(function (): void {
     Route::middleware(['auth', EnsureActiveUser::class])->group(function (): void {
         Route::get('auth/me', [AuthController::class, 'me']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
+        Route::get('dashboard', DashboardController::class);
         Route::apiResource('documents', DocumentController::class)->only(['index', 'show']);
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('products', ProductController::class)->only(['index', 'show']);
