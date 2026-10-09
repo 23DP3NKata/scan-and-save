@@ -24,6 +24,6 @@ Route::prefix('api')->group(function (): void {
         Route::get('documents/{document}/download', [DocumentController::class, 'file'])->name('api.documents.download');
         Route::apiResource('documents', DocumentController::class);
         Route::apiResource('categories', CategoryController::class);
-        Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+        Route::apiResource('products', ProductController::class);
     });
 });
