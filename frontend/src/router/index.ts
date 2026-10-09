@@ -43,6 +43,11 @@ const router = createRouter({
           },
         })),
         {
+          path: "products",
+          component: () => import("../views/app/ProductsView.vue"),
+          meta: { title: "Produkti" },
+        },
+        {
           path: "categories",
           component: () => import("../views/app/CategoriesView.vue"),
           meta: { title: "Kategorijas" },
