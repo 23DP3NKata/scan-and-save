@@ -29,6 +29,11 @@ const router = createRouter({
       component: () => import("../layouts/AppLayout.vue"),
       meta: { auth: true },
       children: [
+        {
+          path: "",
+          component: () => import("../views/app/DashboardView.vue"),
+          meta: { title: "Pārskats" },
+        },
         ...["documents", "receipts", "warranties", "search"].map((section) => ({
           path: section,
           component: () => import("../views/app/DocumentsView.vue"),
