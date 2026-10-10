@@ -48,9 +48,19 @@ const router = createRouter({
           },
         })),
         {
+          path: "documents/:id",
+          component: () => import("../views/app/DocumentDetailView.vue"),
+          meta: { title: "Dokuments" },
+        },
+        {
           path: "products",
           component: () => import("../views/app/ProductsView.vue"),
           meta: { title: "Produkti" },
+        },
+        {
+          path: "products/:id",
+          component: () => import("../views/app/ProductDetailView.vue"),
+          meta: { title: "Produkts" },
         },
         {
           path: "categories",
