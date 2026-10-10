@@ -48,6 +48,16 @@ const router = createRouter({
           },
         })),
         {
+          path: "documents/new",
+          component: () => import("../views/app/DocumentEditView.vue"),
+          meta: { title: "Pievienot dokumentu" },
+        },
+        {
+          path: "documents/:id/edit",
+          component: () => import("../views/app/DocumentEditView.vue"),
+          meta: { title: "Rediģēt dokumentu" },
+        },
+        {
           path: "documents/:id",
           component: () => import("../views/app/DocumentDetailView.vue"),
           meta: { title: "Dokuments" },
