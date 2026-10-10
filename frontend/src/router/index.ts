@@ -58,6 +58,16 @@ const router = createRouter({
           meta: { title: "Produkti" },
         },
         {
+          path: "products/new",
+          component: () => import("../views/app/ProductEditView.vue"),
+          meta: { title: "Pievienot produktu" },
+        },
+        {
+          path: "products/:id/edit",
+          component: () => import("../views/app/ProductEditView.vue"),
+          meta: { title: "Rediģēt produktu" },
+        },
+        {
           path: "products/:id",
           component: () => import("../views/app/ProductDetailView.vue"),
           meta: { title: "Produkts" },
