@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
@@ -33,11 +35,36 @@ class ProductController extends Controller
         return $this->paginated($query->paginate($request->integer('per_page', 20)), ProductResource::class);
     }
 
+    public function store(ProductRequest $request): JsonResponse
+    {
+        $product = $request->user()->products()->create($request->validated());
+
+        return response()->json(new ProductResource($product->load('category')->loadCount('documents')), 201);
+    }
+
     public function show(Request $request, Product $product): ProductResource
     {
         abort_unless($product->user_id === $request->user()->id, 404);
         Gate::authorize('view', $product);
 
         return new ProductResource($product->load(['category', 'documents.category'])->loadCount('documents'));
+    }
+
+    public function update(ProductRequest $request, Product $product): ProductResource
+    {
+        Gate::authorize('update', $product);
+        $product->update($request->validated());
+
+        return $this->show($request, $product);
+    }
+
+    public function destroy(Request $request, Product $product): Response
+    {
+        abort_unless($product->user_id === $request->user()->id, 404);
+        Gate::authorize('delete', $product);
+        $request->validate(['confirmed' => ['required', 'accepted']]);
+        $product->delete();
+
+        return response()->noContent();
     }
 }

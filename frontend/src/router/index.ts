@@ -48,9 +48,39 @@ const router = createRouter({
           },
         })),
         {
+          path: "documents/new",
+          component: () => import("../views/app/DocumentEditView.vue"),
+          meta: { title: "Pievienot dokumentu" },
+        },
+        {
+          path: "documents/:id/edit",
+          component: () => import("../views/app/DocumentEditView.vue"),
+          meta: { title: "Rediģēt dokumentu" },
+        },
+        {
+          path: "documents/:id",
+          component: () => import("../views/app/DocumentDetailView.vue"),
+          meta: { title: "Dokuments" },
+        },
+        {
           path: "products",
           component: () => import("../views/app/ProductsView.vue"),
           meta: { title: "Produkti" },
+        },
+        {
+          path: "products/new",
+          component: () => import("../views/app/ProductEditView.vue"),
+          meta: { title: "Pievienot produktu" },
+        },
+        {
+          path: "products/:id/edit",
+          component: () => import("../views/app/ProductEditView.vue"),
+          meta: { title: "Rediģēt produktu" },
+        },
+        {
+          path: "products/:id",
+          component: () => import("../views/app/ProductDetailView.vue"),
+          meta: { title: "Produkts" },
         },
         {
           path: "categories",

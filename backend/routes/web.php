@@ -20,8 +20,10 @@ Route::prefix('api')->group(function (): void {
         Route::get('auth/me', [AuthController::class, 'me']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('dashboard', DashboardController::class);
-        Route::apiResource('documents', DocumentController::class)->only(['index', 'show']);
+        Route::get('documents/{document}/file', [DocumentController::class, 'file'])->name('api.documents.file');
+        Route::get('documents/{document}/download', [DocumentController::class, 'file'])->name('api.documents.download');
+        Route::apiResource('documents', DocumentController::class);
         Route::apiResource('categories', CategoryController::class);
-        Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+        Route::apiResource('products', ProductController::class);
     });
 });
