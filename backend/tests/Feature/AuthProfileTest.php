@@ -41,6 +41,26 @@ class AuthProfileTest extends TestCase
         ])->assertUnprocessable()->assertJsonValidationErrors(['name', 'email']);
     }
 
+    public function test_login_logout_and_bad_credentials(): void
+    {
+        $user = User::factory()->create(['email' => 'alice@example.test', 'password' => 'safePass123']);
+        $this->postJson('/api/auth/login', ['email' => $user->email, 'password' => 'incorrect'])->assertUnprocessable();
+        $this->assertGuest();
+        $this->postJson('/api/auth/login', ['email' => $user->email, 'password' => 'safePass123'])->assertOk();
+        $this->assertAuthenticatedAs($user);
+        $this->postJson('/api/auth/logout')->assertNoContent();
+        $this->assertGuest();
+        $this->getJson('/api/documents')->assertUnauthorized();
+    }
+
+    public function test_blocked_users_cannot_login_or_continue_an_existing_session(): void
+    {
+        $user = User::factory()->create(['status' => 0, 'password' => 'safePass123']);
+        $this->postJson('/api/auth/login', ['email' => $user->email, 'password' => 'safePass123'])->assertForbidden();
+        $this->actingAs($user)->getJson('/api/documents')->assertForbidden();
+        $this->assertGuest();
+    }
+
     public function test_repeated_bad_logins_are_rate_limited(): void
     {
         for ($attempt = 0; $attempt < 5; $attempt++) {

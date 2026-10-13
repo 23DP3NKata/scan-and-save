@@ -30,6 +30,29 @@ const router = createRouter({
       meta: { auth: true },
       children: [
         {
+          path: "",
+          component: () => import("../views/app/DashboardView.vue"),
+          meta: { title: "Pārskats" },
+        },
+        ...["documents", "receipts", "warranties", "search"].map((section) => ({
+          path: section,
+          component: () => import("../views/app/DocumentsView.vue"),
+          meta: {
+            section,
+            title: {
+              documents: "Mani dokumenti",
+              receipts: "Čeki",
+              warranties: "Garantijas",
+              search: "Meklēšana",
+            }[section],
+          },
+        })),
+        {
+          path: "products",
+          component: () => import("../views/app/ProductsView.vue"),
+          meta: { title: "Produkti" },
+        },
+        {
           path: "categories",
           component: () => import("../views/app/CategoriesView.vue"),
           meta: { title: "Kategorijas" },

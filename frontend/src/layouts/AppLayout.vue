@@ -44,6 +44,11 @@ const isAdmin = computed(() => !!route.meta.admin);
 const links = computed(() =>
   [
         ["/app", "grid", "Pārskats"],
+        ["/app/documents", "folder", "Mani dokumenti"],
+        ["/app/receipts", "scan", "Čeki"],
+        ["/app/warranties", "shield", "Garantijas"],
+        ["/app/products", "laptop", "Produkti"],
+        ["/app/search", "search", "Meklēšana"],
         ["/app/categories", "folder", "Kategorijas"],
       ],
 );
