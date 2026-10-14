@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Middleware\EnsureActiveUser;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,12 @@ Route::prefix('api')->group(function (): void {
     Route::middleware(['auth', EnsureActiveUser::class])->group(function (): void {
         Route::get('auth/me', [AuthController::class, 'me']);
         Route::post('auth/logout', [AuthController::class, 'logout']);
+        Route::get('profile', [ProfileController::class, 'show']);
+        Route::patch('profile', [ProfileController::class, 'update']);
+        Route::delete('profile', [ProfileController::class, 'destroy']);
+        Route::put('profile/password', [ProfileController::class, 'password']);
+        Route::patch('profile/preferences', [ProfileController::class, 'preferences']);
+        Route::get('profile/export', [ProfileController::class, 'export']);
         Route::get('dashboard', DashboardController::class);
         Route::get('documents/{document}/file', [DocumentController::class, 'file'])->name('api.documents.file');
         Route::get('documents/{document}/download', [DocumentController::class, 'file'])->name('api.documents.download');
