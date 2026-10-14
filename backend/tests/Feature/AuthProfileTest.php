@@ -99,4 +99,45 @@ class AuthProfileTest extends TestCase
         $this->assertTrue(Hash::check('replacedPass123', $user->fresh()->password));
         $this->postJson('/api/auth/reset-password', $payload)->assertUnprocessable();
     }
+
+    public function test_profile_password_email_and_preferences_are_validated(): void
+    {
+        $user = User::factory()->create(['password' => 'originalPass']);
+        $this->actingAs($user)->patchJson('/api/profile', ['email' => 'changed@example.test'])->assertUnprocessable()->assertJsonValidationErrors('current_password');
+        $this->patchJson('/api/profile', ['email' => 'changed@example.test', 'current_password' => ['invalid']])->assertUnprocessable()->assertJsonValidationErrors('current_password');
+        $this->patchJson('/api/profile', ['name' => 'Updated123', 'email' => 'changed@example.test', 'current_password' => 'originalPass', 'role' => 1])->assertOk()->assertJsonPath('user.name', 'Updated123')->assertJsonPath('user.role', 0);
+        $this->putJson('/api/profile/password', ['current_password' => 'wrong', 'password' => 'newPassword', 'password_confirmation' => 'newPassword'])->assertUnprocessable();
+        $this->putJson('/api/profile/password', ['current_password' => 'originalPass', 'password' => 'newPassword', 'password_confirmation' => 'newPassword'])->assertSuccessful();
+        $this->assertTrue(Hash::check('newPassword', $user->fresh()->password));
+        $this->patchJson('/api/profile/preferences', ['email_notifications' => false, 'in_app_notifications' => true, 'reminder_days' => 14, 'appearance' => 'dark'])->assertOk()->assertJsonPath('user.appearance', 'dark');
+        $this->patchJson('/api/profile/preferences', ['appearance' => 'rainbow', 'reminder_days' => -1])->assertUnprocessable()->assertJsonValidationErrors(['appearance', 'reminder_days']);
+    }
+
+    public function test_account_deletion_requires_password_and_confirmation_and_cascades_owned_records(): void
+    {
+        $user = User::factory()->create(['password' => 'originalPass']);
+        $category = Category::factory()->for($user)->create();
+        $document = Document::factory()->for($user)->for($category)->create();
+        $this->actingAs($user)->deleteJson('/api/profile', ['current_password' => 'originalPass'])->assertUnprocessable();
+        $this->deleteJson('/api/profile', ['confirmed' => true, 'current_password' => 'wrong'])->assertUnprocessable();
+        $this->deleteJson('/api/profile', ['confirmed' => true, 'current_password' => 'originalPass'])->assertNoContent();
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+        $this->assertDatabaseMissing('documents', ['id' => $document->id]);
+        $this->assertDatabaseMissing('categories', ['id' => $category->id]);
+        $this->assertGuest();
+    }
+
+    public function test_profile_export_contains_only_the_signed_in_users_metadata(): void
+    {
+        $owner = User::factory()->create();
+        $other = User::factory()->create();
+        $private = Document::factory()->for($other)->create(['name' => 'OtherPrivateDocument']);
+        Document::factory()->for($owner)->create(['name' => 'MyDocument']);
+        $response = $this->actingAs($owner)->get('/api/profile/export')->assertOk();
+        $json = $response->streamedContent();
+        $this->assertStringContainsString('MyDocument', $json);
+        $this->assertStringNotContainsString($private->name, $json);
+        $this->assertStringNotContainsString('password', $json);
+        $this->assertStringNotContainsString('file_content', $json);
+    }
 }
