@@ -100,6 +100,23 @@ const router = createRouter({
       ],
     },
     {
+      path: "/admin",
+      component: () => import("../layouts/AppLayout.vue"),
+      meta: { auth: true, admin: true },
+      children: [
+        {
+          path: "",
+          component: () => import("../views/admin/AdminOverview.vue"),
+          meta: { title: "Sistēmas pārskats" },
+        },
+        {
+          path: "users",
+          component: () => import("../views/admin/AdminUsers.vue"),
+          meta: { title: "Lietotāji" },
+        },
+      ],
+    },
+    {
       path: "/connection-error",
       component: () => import("../views/ConnectionError.vue"),
     },
