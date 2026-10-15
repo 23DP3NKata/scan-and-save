@@ -88,6 +88,11 @@ const router = createRouter({
           meta: { title: "Kategorijas" },
         },
         {
+          path: "notifications",
+          component: () => import("../views/app/NotificationsView.vue"),
+          meta: { title: "Atgādinājumi" },
+        },
+        {
           path: "settings",
           component: () => import("../views/app/SettingsView.vue"),
           meta: { title: "Iestatījumi" },

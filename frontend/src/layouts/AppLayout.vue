@@ -48,6 +48,7 @@ const links = computed(() =>
         ["/app/receipts", "scan", "Čeki"],
         ["/app/warranties", "shield", "Garantijas"],
         ["/app/products", "laptop", "Produkti"],
+        ["/app/notifications", "bell", "Atgādinājumi"],
         ["/app/search", "search", "Meklēšana"],
         ["/app/categories", "folder", "Kategorijas"],
         ["/app/settings", "lock", "Iestatījumi"],
