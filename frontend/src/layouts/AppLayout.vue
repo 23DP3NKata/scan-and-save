@@ -50,6 +50,7 @@ const links = computed(() =>
         ["/app/products", "laptop", "Produkti"],
         ["/app/search", "search", "Meklēšana"],
         ["/app/categories", "folder", "Kategorijas"],
+        ["/app/settings", "lock", "Iestatījumi"],
       ],
 );
 function sessionEnded() {
