@@ -34,6 +34,15 @@ class UnicodeProfileTest extends TestCase
         }
     }
 
+    public function test_admin_creation_accepts_a_latvian_username(): void
+    {
+        $this->artisan('scan:create-admin', ['email' => 'admin@example.test', '--name' => 'Pārvaldnieks1'])
+            ->expectsQuestion('Password (at least 12 characters)', 'TemporaryTest123!')
+            ->expectsQuestion('Confirm password', 'TemporaryTest123!')
+            ->assertSuccessful();
+        $this->assertDatabaseHas('users', ['email' => 'admin@example.test', 'name' => 'Pārvaldnieks1', 'role' => 1]);
+    }
+
     public function test_password_reset_email_is_localized_and_links_to_the_configured_frontend(): void
     {
         config(['app.frontend_url' => 'https://scan-save.example']);
