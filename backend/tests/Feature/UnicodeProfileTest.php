@@ -12,6 +12,18 @@ class UnicodeProfileTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_latvian_letters_and_digits_are_accepted_for_registration_profile_and_admin_edits(): void
+    {
+        $this->postJson('/api/auth/register', ['name' => 'Āgnese123', 'email' => 'agnese@example.test', 'password' => 'secret123', 'password_confirmation' => 'secret123'])
+            ->assertCreated()->assertJsonPath('user.name', 'Āgnese123');
+        $this->assertDatabaseHas('categories', ['name' => 'Elektronika']);
+        $this->assertDatabaseHas('categories', ['name' => 'Mājas preces']);
+        $this->assertDatabaseHas('categories', ['name' => 'Citi']);
+        $this->patchJson('/api/profile', ['name' => 'Jānis123'])->assertOk()->assertJsonPath('user.name', 'Jānis123');
+        $user = User::where('email', 'agnese@example.test')->sole();
+        $admin = User::factory()->admin()->create();
+        $this->actingAs($admin)->patchJson('/api/admin/users/'.$user->id, ['name' => 'Mārtiņš42'])->assertOk()->assertJsonPath('name', 'Mārtiņš42');
+    }
 
     public function test_username_length_counts_characters_and_still_rejects_spaces_and_punctuation(): void
     {
