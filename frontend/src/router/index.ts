@@ -114,6 +114,16 @@ const router = createRouter({
           component: () => import("../views/admin/AdminUsers.vue"),
           meta: { title: "Lietotāji" },
         },
+        {
+          path: "documents",
+          component: () => import("../views/admin/AdminDocuments.vue"),
+          meta: { title: "Dokumentu pārvaldība" },
+        },
+        {
+          path: "settings",
+          component: () => import("../views/admin/AdminSettings.vue"),
+          meta: { title: "Sistēmas iestatījumi" },
+        },
       ],
     },
     {

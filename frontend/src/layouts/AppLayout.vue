@@ -46,6 +46,8 @@ const links = computed(() =>
     ? [
         ["/admin", "grid", "Pārskats"],
         ["/admin/users", "shield", "Lietotāji"],
+        ["/admin/documents", "file", "Dokumenti"],
+        ["/admin/settings", "lock", "Iestatījumi"],
         ["/app", "arrow", "Mana darba vieta"],
       ]
     : [
