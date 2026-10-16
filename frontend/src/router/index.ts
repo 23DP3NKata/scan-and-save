@@ -88,9 +88,41 @@ const router = createRouter({
           meta: { title: "Kategorijas" },
         },
         {
+          path: "notifications",
+          component: () => import("../views/app/NotificationsView.vue"),
+          meta: { title: "Atgādinājumi" },
+        },
+        {
           path: "settings",
           component: () => import("../views/app/SettingsView.vue"),
           meta: { title: "Iestatījumi" },
+        },
+      ],
+    },
+    {
+      path: "/admin",
+      component: () => import("../layouts/AppLayout.vue"),
+      meta: { auth: true, admin: true },
+      children: [
+        {
+          path: "",
+          component: () => import("../views/admin/AdminOverview.vue"),
+          meta: { title: "Sistēmas pārskats" },
+        },
+        {
+          path: "users",
+          component: () => import("../views/admin/AdminUsers.vue"),
+          meta: { title: "Lietotāji" },
+        },
+        {
+          path: "documents",
+          component: () => import("../views/admin/AdminDocuments.vue"),
+          meta: { title: "Dokumentu pārvaldība" },
+        },
+        {
+          path: "settings",
+          component: () => import("../views/admin/AdminSettings.vue"),
+          meta: { title: "Sistēmas iestatījumi" },
         },
       ],
     },
