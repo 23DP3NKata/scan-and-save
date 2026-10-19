@@ -6,13 +6,13 @@ Scan & Save is a web application for storing purchase documents: receipts, warra
 
 - **Frontend:** Vue 3, TypeScript, Vite, Vuetify, Pinia, Vue Router (`frontend/`)
 - **Backend:** Laravel 13, PHP 8.3+ (`backend/`)
-- **Database:** SQLite for local development
+- **Database:** SQLite for local development, Supabase (PostgreSQL) for the team database
 
 The frontend talks only to the Laravel API under `/api`. In development, Vite proxies `/api` to Laravel on port 8000. Authentication uses a Laravel session cookie with a CSRF token.
 
 ## Requirements
 
-- PHP 8.3+ with the `pdo_sqlite` and `sqlite3` extensions
+- PHP 8.3+ with the `pdo_sqlite` and `sqlite3` extensions (`pdo_pgsql` for Supabase)
 - Composer
 - Node.js 22 and npm
 
@@ -36,6 +36,33 @@ Frontend:
 cd frontend
 npm ci
 ```
+
+## Supabase (PostgreSQL)
+
+Laravel connects to Supabase on the server side; the browser never talks to the database directly.
+
+1. Enable `extension=pdo_pgsql` in `php.ini`.
+2. In Supabase Dashboard open **Connect → Session pooler** and copy the values into `backend/.env`:
+
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=aws-0-<region>.pooler.supabase.com
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres.<project-ref>
+DB_PASSWORD=<database password>
+DB_SSLMODE=require
+```
+
+3. Create the tables:
+
+```sh
+cd backend
+php artisan config:clear
+php artisan migrate
+```
+
+Use the session pooler on port 5432: it works over IPv4 and supports the prepared statements used by PDO. Keep the password only in `.env` and never commit it.
 
 ## Running the application
 
@@ -83,7 +110,7 @@ php artisan scan:backup
 php artisan scan:restore <backup-directory> --verify
 ```
 
-`scan:backup` writes a backup to `storage/app/private/backups`. Restoring requires maintenance mode (`php artisan down`) and the `--force` flag.
+`scan:backup` writes a backup to `storage/app/private/backups`. Restoring requires maintenance mode (`php artisan down`) and the `--force` flag. These commands work only with the local SQLite database; with Supabase, use the backups in the Supabase dashboard.
 
 ## Tests and build
 
@@ -97,7 +124,7 @@ cd frontend
 npm run build
 ```
 
-Backend tests use an in-memory SQLite database.
+Backend tests use an in-memory SQLite database and do not touch Supabase.
 
 ## Team
 
