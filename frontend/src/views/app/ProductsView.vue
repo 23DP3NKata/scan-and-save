@@ -278,7 +278,7 @@ void loadCategories();
 .section-kicker {
   font-size: 10px;
   letter-spacing: 0.16em;
-  font-weight: 750;
+  font-weight: var(--font-weight-label);
   color: var(--app-accent, #3865ed);
   margin-bottom: 9px;
 }
@@ -357,7 +357,7 @@ void loadCategories();
 }
 .product-card h3 {
   font-size: 18px;
-  font-weight: 650;
+  font-weight: var(--font-weight-heading);
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
@@ -398,7 +398,7 @@ void loadCategories();
 .product-card-footer a {
   color: var(--app-accent, #3865ed);
   text-decoration: none;
-  font-weight: 650;
+  font-weight: var(--font-weight-action);
   white-space: nowrap;
 }
 .empty-symbol {
