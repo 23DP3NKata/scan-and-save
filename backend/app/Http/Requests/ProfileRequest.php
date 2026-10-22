@@ -19,6 +19,11 @@ class ProfileRequest extends FormRequest
         }
     }
 
+    public function attributes(): array
+    {
+        return ['name' => 'lietotājvārds'];
+    }
+
     public function rules(): array
     {
         return match ($this->route()->getActionMethod()) {

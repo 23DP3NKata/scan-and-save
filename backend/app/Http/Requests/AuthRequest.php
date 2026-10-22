@@ -19,6 +19,11 @@ class AuthRequest extends FormRequest
         }
     }
 
+    public function attributes(): array
+    {
+        return ['name' => 'lietotājvārds'];
+    }
+
     public function rules(): array
     {
         $email = ['required', 'string', 'email', 'max:30'];
@@ -34,6 +39,6 @@ class AuthRequest extends FormRequest
 
     public function messages(): array
     {
-        return ['name.regex' => 'Use 3–30 letters and numbers for your username.'];
+        return ['name.regex' => 'Lietotājvārdā izmanto 3–30 burtus vai ciparus.'];
     }
 }
