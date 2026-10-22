@@ -38,7 +38,7 @@ class ProductRequest extends FormRequest
             $purchase = $this->input('purchase_date', $product?->purchase_date?->format('Y-m-d'));
             $end = $this->input('warranty_end_date', $product?->warranty_end_date?->format('Y-m-d'));
             if (is_string($purchase) && is_string($end) && $end < $purchase) {
-                $validator->errors()->add('warranty_end_date', 'Warranty end date must be on or after the purchase date.');
+                $validator->errors()->add('warranty_end_date', 'Garantijas beigu datums nedrīkst būt pirms pirkuma datuma.');
             }
         }];
     }

@@ -50,7 +50,7 @@ class AuthController extends Controller
             abort(403, 'Šis konts ir bloķēts. Sazinieties ar administratoru.');
         }
         if (! Auth::attempt(['email' => $request->validated('email'), 'password' => $request->validated('password'), 'status' => 1], $request->boolean('remember'))) {
-            throw ValidationException::withMessages(['email' => 'The provided email or password is incorrect.']);
+            throw ValidationException::withMessages(['email' => 'Norādītais e-pasts vai parole nav pareiza.']);
         }
         $request->session()->regenerate();
 
