@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LatvianDateInput from "../../components/app/LatvianDateInput.vue";
 import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { api, ApiError, extractError } from "../../services/api";
@@ -255,15 +256,20 @@ watch(() => [route.params.id, route.query.kind, route.query.product_id], load, {
                   ? "Nomainīt failu (nav obligāti)"
                   : "Izvēlies dokumenta failu *"
               }}</label
-            ><input
+            ><span class="file-picker">
+              <input
               id="document-file"
               :aria-invalid="Boolean(fileError || errors.file)"
               type="file"
+              title="Izvēlēties dokumenta failu"
               accept="application/pdf,image/jpeg,image/png,.pdf,.jpg,.jpeg,.png"
               :required="!editing"
               :disabled="busy"
               @change="selectFile"
             />
+              <span class="action-secondary" aria-hidden="true">Izvēlēties failu</span>
+              <span aria-live="polite">{{ file?.name || "Fails nav izvēlēts" }}</span>
+            </span>
             <p v-if="file" class="selected-file">
               {{ file.name }}
               <span class="muted">{{ formatBytes(file.size) }}</span>
@@ -408,18 +414,16 @@ watch(() => [route.params.id, route.query.kind, route.query.product_id], load, {
               ></label
             >
             <label class="field"
-              >Pirkuma datums<input
+              >Pirkuma datums<LatvianDateInput
                 v-model="form.purchase_date"
                 :aria-invalid="Boolean(errors.purchase_date)"
-                type="date"
                 :max="form.warranty_end_date || undefined"
                 :disabled="busy" /><FieldError :messages="errors.purchase_date"
             /></label>
             <label class="field"
-              >Garantija derīga līdz<input
+              >Garantija derīga līdz<LatvianDateInput
                 v-model="form.warranty_end_date"
                 :aria-invalid="Boolean(errors.warranty_end_date)"
-                type="date"
                 :min="form.purchase_date || undefined"
                 :disabled="busy" /><FieldError
                 :messages="errors.warranty_end_date"
@@ -541,7 +545,7 @@ watch(() => [route.params.id, route.query.kind, route.query.product_id], load, {
   background: var(--app-soft, #eef2fc);
   color: var(--app-accent, #3865ed);
   font-size: 12px;
-  font-weight: 750;
+  font-weight: var(--font-weight-heading);
 }
 .upload-box {
   display: flex;
@@ -561,7 +565,7 @@ watch(() => [route.params.id, route.query.kind, route.query.product_id], load, {
 }
 .upload-box label {
   font-size: 14px;
-  font-weight: 650;
+  font-weight: var(--font-weight-label);
 }
 .upload-box input {
   max-width: 100%;
@@ -580,7 +584,7 @@ watch(() => [route.params.id, route.query.kind, route.query.product_id], load, {
   font-size: 12px;
 }
 .selected-file {
-  font-weight: 650;
+  font-weight: var(--font-weight-label);
 }
 .selected-file span {
   margin-left: 8px;
