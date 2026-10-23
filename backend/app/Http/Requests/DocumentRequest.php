@@ -26,10 +26,10 @@ class DocumentRequest extends FormRequest
         return [
             'file' => ['bail', $this->route('document') ? 'sometimes' : 'required', 'file', 'mimetypes:application/pdf,image/jpeg,image/png', function (string $attribute, mixed $value, Closure $fail): void {
                 if ($value && ($value->getSize() >= 10485760 || $value->getSize() < 1)) {
-                    $fail('The file must be greater than 0 bytes and strictly smaller than 10 MiB.');
+                    $fail('Failam jābūt lielākam par 0 baitiem un mazākam par 10 MiB.');
                 }
                 if ($value && mb_strlen($value->getClientOriginalName()) > 255) {
-                    $fail('The file name must not exceed 255 characters.');
+                    $fail('Faila nosaukums nedrīkst pārsniegt 255 rakstzīmes.');
                 }
             }],
             'category_id' => [$this->route('document') ? 'sometimes' : 'required', 'required', 'integer', Rule::exists('categories', 'id')->where('user_id', $ownerId)],
@@ -51,7 +51,7 @@ class DocumentRequest extends FormRequest
             $purchase = $this->input('purchase_date', $document?->purchase_date?->format('Y-m-d'));
             $end = $this->input('warranty_end_date', $document?->warranty_end_date?->format('Y-m-d'));
             if (is_string($purchase) && is_string($end) && $end < $purchase) {
-                $validator->errors()->add('warranty_end_date', 'Warranty end date must be on or after the purchase date.');
+                $validator->errors()->add('warranty_end_date', 'Garantijas beigu datums nedrīkst būt pirms pirkuma datuma.');
             }
         }];
     }

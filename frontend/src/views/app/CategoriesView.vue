@@ -303,7 +303,7 @@ onMounted(load);
 .section-kicker {
   font-size: 10px;
   letter-spacing: 0.16em;
-  font-weight: 750;
+  font-weight: var(--font-weight-label);
   color: var(--app-accent, #3865ed);
   margin-bottom: 9px;
 }

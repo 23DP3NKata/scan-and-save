@@ -10,7 +10,7 @@ class EnsureAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        abort_unless($request->user()?->isAdmin(), 403, 'Administrator access is required.');
+        abort_unless($request->user()?->isAdmin(), 403, 'Šai darbībai nepieciešamas administratora tiesības.');
 
         return $next($request);
     }

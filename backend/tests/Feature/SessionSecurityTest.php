@@ -18,7 +18,7 @@ class SessionSecurityTest extends TestCase
         $routes = ['/api/auth/me', '/api/documents/'.$document->id.'/file', '/api/documents/'.$document->id.'/download', '/api/admin/users'];
         foreach ($routes as $route) {
             foreach ([[], ['Accept' => 'text/html']] as $headers) {
-                $this->get($route, $headers)->assertUnauthorized()->assertHeader('Content-Type', 'application/json')->assertExactJson(['message' => 'Unauthenticated.']);
+                $this->get($route, $headers)->assertUnauthorized()->assertHeader('Content-Type', 'application/json')->assertExactJson(['message' => 'Lūdzu, pieslēdzies savam kontam.']);
             }
         }
     }
@@ -28,7 +28,7 @@ class SessionSecurityTest extends TestCase
         $user = User::factory()->create(['password' => 'safePassword']);
         $this->postJson('/api/auth/login', ['email' => $user->email, 'password' => 'safePassword'])->assertOk();
         $this->deleteJson('/api/profile', ['current_password' => 'safePassword', 'confirmed' => true])->assertNoContent();
-        $this->get('/api/auth/me')->assertUnauthorized()->assertHeader('Content-Type', 'application/json')->assertExactJson(['message' => 'Unauthenticated.']);
+        $this->get('/api/auth/me')->assertUnauthorized()->assertHeader('Content-Type', 'application/json')->assertExactJson(['message' => 'Lūdzu, pieslēdzies savam kontam.']);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
     }
 

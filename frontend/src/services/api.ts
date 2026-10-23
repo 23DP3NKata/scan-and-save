@@ -87,7 +87,7 @@ export function extractError(error: unknown): string {
     const messages = Object.values(error.errors).flat();
     return messages.length ? messages.join(" ") : error.message;
   }
-  return error instanceof Error ? error.message : "Neizdevās izpildīt darbību.";
+  return "Neizdevās izpildīt darbību. Lūdzu, mēģini vēlreiz.";
 }
 export async function downloadFile(
   path: string,

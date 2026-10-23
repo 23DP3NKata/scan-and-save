@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LatvianDateInput from "../../components/app/LatvianDateInput.vue";
 import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { api, extractError } from "../../services/api";
@@ -188,15 +189,13 @@ void loadCategories();
           </select></label
         >
         <label class="field"
-          >Pirkums no<input
+          >Pirkums no<LatvianDateInput
             v-model="filters.date_from"
-            type="date"
             :max="filters.date_to || undefined"
         /></label>
         <label class="field"
-          >Pirkums līdz<input
+          >Pirkums līdz<LatvianDateInput
             v-model="filters.date_to"
-            type="date"
             :min="filters.date_from || undefined"
         /></label>
       </div>
@@ -336,7 +335,7 @@ void loadCategories();
 .section-kicker {
   font-size: 10px;
   letter-spacing: 0.16em;
-  font-weight: 750;
+  font-weight: var(--font-weight-label);
   color: var(--app-accent, #3865ed);
   margin-bottom: 9px;
 }

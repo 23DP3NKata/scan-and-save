@@ -106,9 +106,10 @@ class AdminController extends Controller
 
         return response()->streamDownload(function () use ($statistics): void {
             $stream = fopen('php://output', 'wb');
-            fputcsv($stream, ['Metric', 'Value'], escape: '');
+            fputcsv($stream, ['Rādītājs', 'Vērtība'], escape: '');
+            $labels = ['users' => 'Lietotāji', 'blocked_users' => 'Bloķēti lietotāji', 'documents' => 'Dokumenti', 'products' => 'Produkti', 'categories' => 'Kategorijas', 'notifications' => 'Paziņojumi', 'storage_bytes' => 'Failu apjoms baitos', 'expiring' => 'Drīz beigsies', 'expired' => 'Beigušās garantijas'];
             foreach ($statistics as $metric => $value) {
-                fputcsv($stream, [$metric, $value], escape: '');
+                fputcsv($stream, [$labels[$metric] ?? $metric, $value], escape: '');
             }
             fclose($stream);
         }, 'scan-save-report-'.now()->format('Y-m-d').'.csv', ['Content-Type' => 'text/csv; charset=UTF-8', 'Cache-Control' => 'private, no-store']);

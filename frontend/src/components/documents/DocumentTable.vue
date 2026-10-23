@@ -103,7 +103,7 @@ defineProps<{ documents: DocumentRecord[] }>();
   min-width: 0;
 }
 .file-title strong {
-  font-weight: 650;
+  font-weight: var(--font-weight-heading);
   max-width: 280px;
   overflow-wrap: anywhere;
 }
@@ -126,7 +126,7 @@ defineProps<{ documents: DocumentRecord[] }>();
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  font-weight: 650;
+  font-weight: var(--font-weight-action);
   color: var(--app-accent, #3865ed);
   text-decoration: none;
 }

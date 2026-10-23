@@ -87,7 +87,7 @@ onMounted(load);
         <dl class="detail-grid">
           <div>
             <dt>Datubāze</dt>
-            <dd>{{ health.database }}</dd>
+            <dd>{{ health.database === 'ok' ? 'Darbojas' : 'Nav pieejama' }}</dd>
           </div>
           <div>
             <dt>Pēdējā atgādinājumu pārbaude</dt>
@@ -101,7 +101,7 @@ onMounted(load);
           </div>
           <div>
             <dt>E-pasta transports</dt>
-            <dd>{{ health.mail_mailer }}</dd>
+            <dd>{{ health.mail_mailer === 'log' ? 'Lokālais žurnāls' : 'E-pasta serveris' }}</dd>
           </div>
           <div>
             <dt>Pēdējā rezerves kopija</dt>

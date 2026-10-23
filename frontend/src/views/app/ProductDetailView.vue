@@ -259,7 +259,7 @@ watch(() => route.params.id, load, { immediate: true });
 }
 .product-overview dd {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--font-weight-medium);
   margin: 8px 0 0;
   overflow-wrap: anywhere;
 }

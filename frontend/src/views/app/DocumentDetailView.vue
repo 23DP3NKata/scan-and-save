@@ -315,7 +315,7 @@ watch(() => route.params.id, load, { immediate: true });
   color: var(--app-accent, #3865ed);
   font-size: 13px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-action);
 }
 .file-preview {
   background: var(--app-soft, #eff2f7);
@@ -386,7 +386,7 @@ watch(() => route.params.id, load, { immediate: true });
   min-width: 0;
 }
 .document-amount {
-  font-weight: 750;
+  font-weight: var(--font-weight-heading);
   font-variant-numeric: tabular-nums;
 }
 .warranty-title {

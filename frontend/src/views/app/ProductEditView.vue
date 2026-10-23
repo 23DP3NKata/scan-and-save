@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LatvianDateInput from "../../components/app/LatvianDateInput.vue";
 import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { api, ApiError, extractError } from "../../services/api";
@@ -249,18 +250,16 @@ watch(() => route.params.id, load, { immediate: true });
           ></label
         >
         <label class="field"
-          >Pirkuma datums<input
+          >Pirkuma datums<LatvianDateInput
             v-model="form.purchase_date"
             :aria-invalid="Boolean(errors.purchase_date)"
-            type="date"
             :max="form.warranty_end_date || undefined"
             :disabled="busy" /><FieldError :messages="errors.purchase_date"
         /></label>
         <label class="field full-field"
-          >Garantija derīga līdz<input
+          >Garantija derīga līdz<LatvianDateInput
             v-model="form.warranty_end_date"
             :aria-invalid="Boolean(errors.warranty_end_date)"
-            type="date"
             :min="form.purchase_date || undefined"
             :disabled="busy"
           /><FieldError :messages="errors.warranty_end_date" /><small

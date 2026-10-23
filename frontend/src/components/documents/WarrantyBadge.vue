@@ -23,7 +23,7 @@ const labels: Record<string, string> = {
   gap: 7px;
   white-space: nowrap;
   font-size: 12px;
-  font-weight: 650;
+  font-weight: var(--font-weight-medium);
   border: 1px solid transparent;
 }
 .warranty-active {

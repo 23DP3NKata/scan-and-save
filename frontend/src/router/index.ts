@@ -116,8 +116,7 @@ const router = createRouter({
         },
         {
           path: "documents",
-          component: () => import("../views/admin/AdminDocuments.vue"),
-          meta: { title: "Dokumentu pārvaldība" },
+          redirect: "/admin",
         },
         {
           path: "settings",

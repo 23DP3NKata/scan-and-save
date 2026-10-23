@@ -34,11 +34,10 @@
 }
 .workspace h1,
 .auth-page h1 {
-  font-family: "Manrope", sans-serif;
   font-size: 32px;
   line-height: 1.25;
   font-weight: 700;
-  letter-spacing: -1.2px;
+  letter-spacing: var(--tracking-section);
   margin: 0;
   overflow-wrap: anywhere;
 }
@@ -46,8 +45,8 @@
 .confirm-card h2 {
   font-size: 18px;
   line-height: 1.4;
-  letter-spacing: -0.4px;
-  font-weight: 650;
+  letter-spacing: var(--tracking-section);
+  font-weight: var(--font-weight-section);
 }
 .workspace h3 {
   font-size: 16px;
@@ -341,7 +340,7 @@ button:disabled {
 }
 .field small {
   font-size: 10px;
-  font-weight: 400;
+  font-weight: var(--font-weight-medium);
   color: var(--app-muted, #65758a);
 }
 .field input,
@@ -358,9 +357,8 @@ button:disabled {
   background: var(--surface, #fff);
   color: var(--app-text, #24374d);
   padding: 11px 12px;
-  font:
-    400 13px "DM Sans",
-    sans-serif;
+  font-size: 13px;
+  font-weight: var(--font-weight-body);
   line-height: 1.4;
 }
 .field textarea {
@@ -537,9 +535,8 @@ button:disabled {
   padding-right: 15px;
 }
 .metric-card > strong {
-  font-family: "Manrope", sans-serif;
   font-size: 35px;
-  font-weight: 650;
+  font-weight: var(--font-weight-section);
   letter-spacing: -1px;
   margin-top: 12px;
 }
@@ -822,7 +819,7 @@ button:disabled {
 }
 .auth-story h1 {
   font-size: clamp(32px, 3.5vw, 53px);
-  letter-spacing: -2px;
+  letter-spacing: var(--tracking-hero);
   line-height: 1.35;
 }
 .auth-story h1 span {
@@ -892,7 +889,7 @@ button:disabled {
 .auth-form-wrap h2 {
   font-size: 33px;
   line-height: 1.3;
-  letter-spacing: -1.5px;
+  letter-spacing: var(--tracking-section);
 }
 .auth-form-wrap > p.muted {
   font-size: 12px;
@@ -956,7 +953,7 @@ button:disabled {
 }
 .standalone-state h1 {
   font-size: 32px;
-  letter-spacing: -1px;
+  letter-spacing: var(--tracking-section);
 }
 .standalone-state p {
   margin: 20px 0;
@@ -1074,7 +1071,7 @@ button:disabled {
   }
   .auth-story h1 {
     font-size: 31px;
-    letter-spacing: -1.4px;
+    letter-spacing: var(--tracking-hero);
   }
   .auth-story > div > p:not(.eyebrow) {
     font-size: 11px;
@@ -1435,3 +1432,23 @@ button:disabled {
   font-size: 12px;
   margin-bottom: 15px;
 }
+
+.file-picker {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.file-picker input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-picker:focus-within { outline: 2px solid #8ba8ff; outline-offset: 3px; border-radius: 7px; }

@@ -1,0 +1,102 @@
+/* Manrope from google/fonts (ofl/manrope), restricted to its 400–700 weight axis.
+   One local WOFF2 supplies every text weight, including 650.
+   License: public/fonts/Manrope-LICENSE.txt. */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/manrope-variable.woff2") format("woff2");
+}
+
+:root {
+  --font-main: "Manrope", sans-serif;
+  --font-weight-body: 400;
+  --font-weight-medium: 500;
+  --font-weight-label: 600;
+  --font-weight-action: 600;
+  --font-weight-section: 650;
+  --font-weight-heading: 700;
+  --tracking-hero: -0.035em;
+  --tracking-section: -0.025em;
+  /* Vuetify 4 uses these for components and typography utilities, including overlays. */
+  --v-font-body: var(--font-main);
+  --v-font-heading: var(--font-main);
+  font-family: var(--font-main);
+  font-weight: var(--font-weight-body);
+}
+
+body {
+  font-family: var(--font-main);
+  font-weight: var(--font-weight-body);
+}
+
+/* Native form controls do not consistently inherit the document font. */
+button,
+input,
+select,
+textarea,
+::file-selector-button {
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-weight: var(--font-weight-body);
+}
+
+h1 {
+  font-weight: var(--font-weight-heading);
+  letter-spacing: var(--tracking-hero);
+}
+
+h2 {
+  font-weight: var(--font-weight-section);
+  letter-spacing: var(--tracking-section);
+}
+
+h3,
+h4,
+h5,
+h6,
+.v-card-title,
+.v-list-subheader {
+  font-weight: var(--font-weight-section);
+}
+
+button,
+::file-selector-button,
+.v-btn,
+nav a,
+.text-link {
+  font-weight: var(--font-weight-action);
+}
+
+label,
+.v-label,
+.eyebrow,
+th {
+  font-weight: var(--font-weight-label);
+}
+
+small,
+time,
+dt,
+dd,
+td,
+.hero-note,
+.receipt-muted,
+.receipt-id,
+.small-muted,
+.preview-label,
+.table-date,
+.notification-title span,
+.story-file-bottom,
+.sidebar-caption,
+.breadcrumb,
+.footer-bottom,
+.v-messages,
+.v-counter {
+  font-weight: var(--font-weight-medium);
+}

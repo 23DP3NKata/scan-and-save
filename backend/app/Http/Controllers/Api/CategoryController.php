@@ -46,7 +46,7 @@ class CategoryController extends Controller
         Gate::authorize('delete', $category);
         $request->validate(['confirmed' => ['required', 'accepted']]);
         if ($category->documents()->exists() || $category->products()->exists()) {
-            throw ValidationException::withMessages(['category' => 'Move or delete the documents and products in this category before deleting it.']);
+            throw ValidationException::withMessages(['category' => 'Pirms kategorijas dzēšanas pārvieto vai izdzēs tajā esošos dokumentus un produktus.']);
         }
         $category->delete();
 
