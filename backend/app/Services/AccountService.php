@@ -12,7 +12,7 @@ class AccountService
     {
         $admins = User::where('role', 1)->where('status', 1)->orderBy('id')->lockForUpdate()->get(['id']);
         if ($removingAccess && $user->isAdmin() && $admins->count() <= 1) {
-            throw ValidationException::withMessages(['role' => 'The last active administrator cannot be removed, blocked, or demoted.']);
+            throw ValidationException::withMessages(['role' => 'Pēdējo aktīvo administratoru nevar dzēst, bloķēt vai pazemināt viņa lomu.']);
         }
     }
 

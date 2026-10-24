@@ -42,8 +42,23 @@ const error = ref("");
 const busy = ref(false);
 const isAdmin = computed(() => !!route.meta.admin);
 const links = computed(() =>
-  [
+  isAdmin.value
+    ? [
+        ["/admin", "grid", "Pārskats"],
+        ["/admin/users", "shield", "Lietotāji"],
+        ["/admin/settings", "lock", "Iestatījumi"],
+        ["/app", "arrow", "Mana darba vieta"],
+      ]
+    : [
         ["/app", "grid", "Pārskats"],
+        ["/app/documents", "folder", "Mani dokumenti"],
+        ["/app/receipts", "scan", "Čeki"],
+        ["/app/warranties", "shield", "Garantijas"],
+        ["/app/products", "laptop", "Produkti"],
+        ["/app/notifications", "bell", "Atgādinājumi"],
+        ["/app/search", "search", "Meklēšana"],
+        ["/app/categories", "folder", "Kategorijas"],
+        ["/app/settings", "lock", "Iestatījumi"],
       ],
 );
 function sessionEnded() {
